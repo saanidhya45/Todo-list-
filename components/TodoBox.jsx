@@ -42,64 +42,83 @@ const TodoBox = () => {
     // seta('line-through')
   };
   return (
-    <div className="border border white min-h-fit w-100 rounded flex flex-col items-center px-3 py-5 gap-5 bg-white text-black rounded-2xl border border-red-1px">
-      <h1 className="text-3xl">Todobox</h1>
-      <form className="flex gap-5">
-        <input
-          onChange={(e) => {
-            setfirst(e.target.value);
-            console.log(e.target.value);
-          }}
-          type="text"
-          value={first}
-          placeholder="write your todos"
-          className="px-3 py-1"
-        />
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            userTodosList(e);
-          }}
-          className="bg-green-500 px-3 py-1 rounded w-16  active:scale-95"
-        >
-          add
-        </button>
-      </form>
+  <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 space-y-6">
 
-      {todos.map((value, idx) => {
-        return (
+    {/* Header */}
+    <h1 className="text-3xl font-bold text-center text-gray-800">
+      📝 Todo Box
+    </h1>
+
+    {/* Input Section */}
+    <form className="flex gap-3">
+      <input
+        type="text"
+        value={first}
+        onChange={(e) => setfirst(e.target.value)}
+        placeholder="Write your todo..."
+        className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          userTodosList();
+        }}
+        className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 active:scale-95 transition"
+      >
+        Add
+      </button>
+    </form>
+
+    {/* Todo List */}
+    <div className="space-y-3 max-h-72 overflow-y-auto">
+      {todos.length === 0 ? (
+        <p className="text-center text-gray-500">
+          No todos yet ✨
+        </p>
+      ) : (
+        todos.map((value, idx) => (
           <div
-            key={idx}
-            className="min-h-fit w-full flex justify-between p-2 gap-4"
+            key={value.id}
+            className="flex justify-between items-center bg-gray-100 rounded-lg px-4 py-3"
           >
-            <p className={value.completed ? "line-through" : ""}>
+            <p
+              className={`flex-1 ${
+                value.completed
+                  ? "line-through text-gray-400"
+                  : "text-gray-800"
+              }`}
+            >
               {value.title}
             </p>
-            <div className="flex gap-2 items-center justify-center">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  deleteTodo(value.id);
-                }}
-                className="bg-red-500 rounded px-3 py-1 w-16 active:scale-90"
-              >
-                Delete
-              </button>
+
+            <div className="flex gap-2">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   markDone(value, idx);
                 }}
-                className="bg-green-500 rounded px-3 py-1 w-16 active:scale-90"
+                className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 active:scale-95 transition"
               >
                 Done
               </button>
+
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  deleteTodo(value.id);
+                }}
+                className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 active:scale-95 transition"
+              >
+                Delete
+              </button>
             </div>
           </div>
-        );
-      })}
+        ))
+      )}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default TodoBox;
